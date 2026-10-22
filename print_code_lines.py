@@ -1,9 +1,12 @@
 import os, sys
+import matplotlib.pyplot as plt
+import datetime as dt
 
 current = os.getcwd()
 print (f"we are in {current} folder")
 
 folder = input ("Enter folder to scan: ")
+folder = "code"
 
 if not os.path.exists(folder):
     print (f"Folder {folder} does not exist")
@@ -11,7 +14,6 @@ if not os.path.exists(folder):
 else:
     print ("Folder exists, continue scanning")
 
-#folder = "code"
 
 files = os.listdir(folder)[1:]
 #print (files)
@@ -23,7 +25,7 @@ extensions = [f.split(".")[1] for f in files]
 #print (extensions)
 
 e_set = list(set(extensions))
-print ("set " , e_set)
+#print ("set " , e_set)
 
 e_dict = {e_set[i]: 0 for i in range(len(e_set))}
 #print (e_dict)
@@ -48,3 +50,16 @@ for k in e_dict:
 
 for k in e_dict:
     print (k, ":", e_dict[k])
+
+plt.figure(figsize=(10, 5))
+plt.title(f"Code Lines by Extension in {folder} folder", fontsize=30)
+
+data = list (e_dict.values())
+labels = list (e_dict.keys())
+
+for k in e_dict:
+    number = float (e_dict[k].split("%")[0])
+    plt.bar(k, height = number)
+
+
+plt.show()
