@@ -3,10 +3,11 @@ import matplotlib.pyplot as plt
 import datetime as dt
 
 current = os.getcwd()
-print (f"we are in {current} folder")
+print (f"We are in {current} folder")
 
 folder = input ("Enter folder to scan: ")
-folder = "code"
+#folder = "code"
+save_folder = "SCAN"
 
 if not os.path.exists(folder):
     print (f"Folder {folder} does not exist")
@@ -31,7 +32,9 @@ e_dict = {e_set[i]: 0 for i in range(len(e_set))}
 #print (e_dict)
 
 for k in files_dict:
+    print(f"Scanning {k} file")
     with open (folder + os.sep + k, "r") as r:
+        #files_dict[k] = sum(1 for _ in r)
         read = r.readlines()
     files_dict[k] = len(read)
 
@@ -48,8 +51,8 @@ for k in e_dict:
     r_value = round(value, 2)
     e_dict[k] = str(r_value) + "%"
 
-for k in e_dict:
-    print (k, ":", e_dict[k])
+#for k in e_dict:
+#    print (k, ":", e_dict[k])
 
 plt.figure(figsize=(10, 5))
 plt.title(f"Code Lines by Extension in {folder} folder", fontsize=30)
@@ -61,5 +64,13 @@ for k in e_dict:
     number = float (e_dict[k].split("%")[0])
     plt.bar(k, height = number)
 
+timestamp = dt.datetime.now().strftime("%Y-%m-%d")
+plt.xticks(fontsize=15)
+plt.yticks(fontsize=15)
 
+plt.xlabel ("File Extensions", fontsize=15)
+plt.ylabel ("Percentage of Code Lines", fontsize=15)
+plt.legend (labels = data, fontsize = 20)
+
+plt.savefig(f"{save_folder}{os.sep}{folder}-{timestamp}" + ".png",bbox_inches='tight')                                     
 plt.show()
